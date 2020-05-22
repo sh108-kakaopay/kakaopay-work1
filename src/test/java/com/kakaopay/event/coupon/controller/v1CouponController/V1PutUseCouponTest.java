@@ -8,7 +8,6 @@ import com.kakaopay.event.coupon.domain.enums.CouponErrorStatus;
 import com.kakaopay.event.coupon.domain.enums.CouponStatus;
 import com.kakaopay.event.coupon.domain.response.V1CouponErrorResponse;
 import com.kakaopay.event.coupon.repository.CouponRepository;
-import com.kakaopay.event.coupon.util.MockMvcTestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -26,21 +24,21 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
-@DisplayName("[쿠폰 사용 API] [POST] /v1/coupon/use TEST")
-class V1PostUseCouponTest {
+@DisplayName("[쿠폰 사용 API] [PUT] /v1/coupon/{serial}/use TEST")
+class V1PutUseCouponTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private CouponRepository couponRepository;
-    private final String url = "/v1/coupon/use";
+    private final String url = "/v1/coupon/%s/use";
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
@@ -56,11 +54,8 @@ class V1PostUseCouponTest {
     @Test
     @DisplayName("[E] 없는 쿠폰을 요청 했을때 에러")
     void 없는_쿠폰을_요청_했을때_에러() throws Exception {
-        MvcResult result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
-                        "coupon-serial", UUID.randomUUID().toString()
-                ))
+        MvcResult result = mockMvc.perform(
+                put(String.format(url, UUID.randomUUID().toString()))
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -86,11 +81,8 @@ class V1PostUseCouponTest {
 
         couponRepository.saveAndFlush(coupon);
 
-        MvcResult result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
-                        "coupon-serial", targetCouponSerial
-                ))
+        MvcResult result = mockMvc.perform(
+                put(String.format(url, targetCouponSerial))
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -105,11 +97,8 @@ class V1PostUseCouponTest {
     @Test
     @DisplayName("[E] 36자리에 맞춰서 요청하지 않았을경우")
     void 시리얼을_36자리에_맞춰서_요청하지_않았을경우() throws Exception {
-        mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
-                        "coupon-serial", "111"
-                ))
+        mockMvc.perform(
+                put(String.format(url, UUID.randomUUID().toString()))
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -132,11 +121,8 @@ class V1PostUseCouponTest {
         coupon.setRegTimestamp(LocalDateTime.MAX);
         couponRepository.saveAndFlush(coupon);
 
-        mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
-                        "coupon-serial", targetCouponSerial
-                ))
+        mockMvc.perform(
+                put(String.format(url, targetCouponSerial))
         ).andExpect(
                 status().isOk()
         ).andDo(

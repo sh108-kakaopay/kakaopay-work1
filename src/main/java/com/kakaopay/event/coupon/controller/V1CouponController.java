@@ -37,7 +37,7 @@ public class V1CouponController {
     }
 
     //4. 지급된 쿠폰중 하나를 사용하는 API를 구현하세요. (쿠폰 재사용은 불가)
-    @PostMapping("/{coupon-serial}/use")
+    @PutMapping("/{coupon-serial}/use")
     public void use(@PathVariable("coupon-serial") @NotEmpty @Size(min = 36, max = 36) String couponSerial) {
         if (couponService.use(couponSerial) == false) {
             throw new InternalServerError();
