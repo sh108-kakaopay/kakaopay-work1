@@ -18,13 +18,16 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: mvn -B package --file pom.xml
-        run: mvn test
-      - uses: actions/upload-artifact@v2
+      - name: Maven Build & Test
+        run: mvn -B package --file pom.xml
+
+      - name: Upload Jar file
+        uses: actions/upload-artifact@v2
         with:
-          name: jar
+          name: jar-file
           path: target/*.jar
-      - uses: actions/upload-artifact@v2
+      - name: Upload Test Result file
+       uses: actions/upload-artifact@v2
         with:
           name: surefire-reports
           path: target/surefire-reports/*
