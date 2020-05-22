@@ -13,9 +13,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(
-        properties = {"propertyTest.value=propertyTest", "testValue=test"}
-)
+@SpringBootTest
 class CouponServiceTest {
     @Autowired
     private CouponService couponService;
