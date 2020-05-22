@@ -1,4 +1,6 @@
-# KakaoPay 과제01  ![badge-jdk-8] ![badge-tool-maven] ![badge-junit-jupiter]
+# KakaoPay 과제01  
+
+![badge-jdk-8] ![badge-tool-maven] ![badge-junit-jupiter]
 
 ## 목적 
 - 쿠폰 서비스 프로젝트에 대하여, 설계/구성 한 문서.
