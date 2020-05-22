@@ -52,8 +52,8 @@
 ## 공통 스펙 
 
 
+## [POST] /v1/coupons 
 ## 숫자 N을 요청하면 N개 만큼 쿠폰을 발급하는 API
-### [POST] /v1/coupons 
 ### Request
 ~~테이블~~
 ### Response
@@ -68,8 +68,9 @@
 ~~테이블~~
 
 
-## 사용자에게 지급된 쿠폰을 조회하는 API
-### [GET] /v1/coupon/{serial}
+
+## [GET] /v1/coupon/{serial}
+### 사용자에게 지급된 쿠폰을 조회하는 API
 ### Response
 ### Success (200 OKAY)
 ```json
@@ -78,8 +79,9 @@
     "expired": "2024-10-27T17:13:40+00:00"
 }
 ```
-## 쿠폰 지급 API
-### [PUT] /v1/coupon/{serial}/assign
+
+## [PUT] /v1/coupon/{serial}/assign
+### 쿠폰 지급 API
 ### Response
 ### Success (200 OKAY)
 ```http request
@@ -87,16 +89,17 @@ empty response
 ```
 
 
-## 지급된 쿠폰을 사용하는 API
-### [PUT] /v1/coupon/{serial}/use
+
+## [PUT] /v1/coupon/{serial}/use
+### 지급된 쿠폰을 사용하는 API
 ### Response
 ### Success (200 OKAY)
 ```http request
 empty response
 ```
 
-## 지급된 쿠폰을 사용취소하는 API 
-### [DELETE] /v1/coupon/{serial}/use
+## [DELETE] /v1/coupon/{serial}/use
+### 지급된 쿠폰을 사용취소하는 API 
 ### Response
 ### Success (200 OKAY)
 ```http request
