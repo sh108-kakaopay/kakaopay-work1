@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
-@DisplayName("[쿠폰 사용 취소 API][DELETE] /v1/coupon/{serial}")
+@DisplayName("[쿠폰 사용 취소 API][DELETE] /v1/coupon/{serial}/use")
 class V1DeleteCancelCouponTest {
     @Autowired
     private MockMvc mockMvc;
@@ -40,7 +40,7 @@ class V1DeleteCancelCouponTest {
     private CouponRepository couponRepository;
 
     private ObjectMapper objectMapper = new ObjectMapper();
-    private final String url = "/v1/coupon/";
+    private final String url = "/v1/coupon/%s/use";
 
     @BeforeEach
     void setup() {
@@ -56,7 +56,9 @@ class V1DeleteCancelCouponTest {
     @Test
     @DisplayName("[E] 없는 쿠폰을 요청 했을때 에러")
     void 없는_쿠폰을_요청_했을때_에러() throws Exception {
-        MvcResult result = mockMvc.perform(delete(url + UUID.randomUUID().toString()))
+        MvcResult result = mockMvc.perform(
+                delete(String.format(url, UUID.randomUUID().toString()))
+        )
                 .andExpect(
                         status().isBadRequest()
                 ).andDo(
@@ -81,7 +83,9 @@ class V1DeleteCancelCouponTest {
 
         couponRepository.saveAndFlush(coupon);
 
-        MvcResult result = mockMvc.perform(delete(url + targetCouponSerial))
+        MvcResult result = mockMvc.perform(
+                delete(String.format(url, targetCouponSerial))
+        )
                 .andExpect(
                         status().isBadRequest()
                 ).andDo(
@@ -106,7 +110,9 @@ class V1DeleteCancelCouponTest {
         coupon.setRegTimestamp(LocalDateTime.MAX);
         couponRepository.saveAndFlush(coupon);
 
-        MvcResult result = mockMvc.perform(delete(url + targetCouponSerial))
+        MvcResult result = mockMvc.perform(
+                delete(String.format(url, targetCouponSerial))
+        )
                 .andExpect(status().isBadRequest())
                 .andDo(print())
                 .andReturn();
@@ -132,7 +138,7 @@ class V1DeleteCancelCouponTest {
         coupon.setRegTimestamp(LocalDateTime.MAX);
         couponRepository.saveAndFlush(coupon);
 
-        mockMvc.perform(delete(url + targetCouponSerial))
+        mockMvc.perform(delete(String.format(url, targetCouponSerial)))
                 .andExpect(status().isOk())
                 .andDo(print());
         assertEquals(couponRepository.findFirstByCouponEquals(targetCouponSerial).getStatus(), CouponStatus.ASSIGN);
