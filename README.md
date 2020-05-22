@@ -78,9 +78,17 @@
     "expired": "2024-10-27T17:13:40+00:00"
 }
 ```
+## 쿠폰 지급 API
+### [PUT] /v1/coupon/{serial}/assign
+### Response
+### Success (200 OKAY)
+```http request
+empty response
+```
+
 
 ## 지급된 쿠폰을 사용하는 API
-### [POST] /v1/coupon/use
+### [PUT] /v1/coupon/{serial}/use
 ### Response
 ### Success (200 OKAY)
 ```http request
@@ -88,7 +96,7 @@ empty response
 ```
 
 ## 지급된 쿠폰을 사용취소하는 API 
-### [DELETE] /v1/coupon/{serial}
+### [DELETE] /v1/coupon/{serial}/use
 ### Response
 ### Success (200 OKAY)
 ```http request
