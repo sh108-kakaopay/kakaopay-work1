@@ -27,7 +27,7 @@ jobs:
           name: jar-file
           path: target/*.jar
       - name: Upload Test Result file
-       uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: surefire-reports
           path: target/surefire-reports/*
