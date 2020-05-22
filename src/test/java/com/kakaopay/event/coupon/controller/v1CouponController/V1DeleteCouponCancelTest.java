@@ -24,22 +24,23 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
-@DisplayName("[쿠폰 사용 API] [PUT] /v1/coupon/{serial}/use TEST")
-class V1PutUseCouponTest {
+@DisplayName("[쿠폰 사용 취소 API][DELETE] /v1/coupon/{serial}/use")
+class V1DeleteCouponCancelTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private CouponRepository couponRepository;
-    private final String url = "/v1/coupon/%s/use";
+
     private ObjectMapper objectMapper = new ObjectMapper();
+    private final String url = "/v1/coupon/%s/use";
 
     @BeforeEach
     void setup() {
@@ -51,17 +52,18 @@ class V1PutUseCouponTest {
         couponRepository.deleteAll();
     }
 
+
     @Test
     @DisplayName("[E] 없는 쿠폰을 요청 했을때 에러")
     void 없는_쿠폰을_요청_했을때_에러() throws Exception {
         MvcResult result = mockMvc.perform(
-                put(String.format(url, UUID.randomUUID().toString()))
-        ).andExpect(
-                status().isBadRequest()
-        ).andDo(
-                print()
-        ).andReturn();
-
+                delete(String.format(url, UUID.randomUUID().toString()))
+        )
+                .andExpect(
+                        status().isBadRequest()
+                ).andDo(
+                        print()
+                ).andReturn();
         V1CouponErrorResponse v1CouponErrorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
         assertNotNull(v1CouponErrorResponse);
         assertEquals(v1CouponErrorResponse.getErrorCode(), CouponErrorStatus.NOT_FOUND.value);
@@ -82,34 +84,21 @@ class V1PutUseCouponTest {
         couponRepository.saveAndFlush(coupon);
 
         MvcResult result = mockMvc.perform(
-                put(String.format(url, targetCouponSerial))
-        ).andExpect(
-                status().isBadRequest()
-        ).andDo(
-                print()
-        ).andReturn();
+                delete(String.format(url, targetCouponSerial))
+        )
+                .andExpect(
+                        status().isBadRequest()
+                ).andDo(
+                        print()
+                ).andReturn();
         V1CouponErrorResponse v1CouponErrorResponse = new ObjectMapper().readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
         assertNotNull(v1CouponErrorResponse);
         assertEquals(v1CouponErrorResponse.getErrorCode(), CouponErrorStatus.EXPIRED.value);
     }
 
-    //
     @Test
-    @DisplayName("[E] 36자리에 맞춰서 요청하지 않았을경우")
-    void 시리얼을_36자리에_맞춰서_요청하지_않았을경우() throws Exception {
-        mockMvc.perform(
-                put(String.format(url, UUID.randomUUID().toString()))
-        ).andExpect(
-                status().isBadRequest()
-        ).andDo(
-                print()
-        );
-    }
-
-
-    @Test
-    @DisplayName("[S] 쿠폰 사용")
-    void 쿠폰요청() throws Exception {
+    @DisplayName("[E] 사용 안된 쿠폰 취소 요청")
+    void 사용안된_쿠폰_취소_요청() throws Exception {
         String targetCouponSerial = UUID.randomUUID().toString();
         LocalDateTime expired = LocalDateTime.now().plusHours(1);
 
@@ -121,15 +110,38 @@ class V1PutUseCouponTest {
         coupon.setRegTimestamp(LocalDateTime.MAX);
         couponRepository.saveAndFlush(coupon);
 
-        mockMvc.perform(
-                put(String.format(url, targetCouponSerial))
-        ).andExpect(
-                status().isOk()
-        ).andDo(
-                print()
-        );
+        MvcResult result = mockMvc.perform(
+                delete(String.format(url, targetCouponSerial))
+        )
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andReturn();
 
-        assertEquals(couponRepository.findFirstByCouponEquals(targetCouponSerial).getStatus(), CouponStatus.USE);
+        V1CouponErrorResponse v1CouponErrorResponse = new ObjectMapper().readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
+        assertNotNull(v1CouponErrorResponse);
+        assertEquals(v1CouponErrorResponse.getErrorCode(), CouponErrorStatus.NOT_ASSIGN.value);
+
+    }
+
+
+    @Test
+    @DisplayName("[S] 사용된 쿠폰 취소 요청")
+    void 사용된_쿠폰_취소_요청() throws Exception {
+        String targetCouponSerial = UUID.randomUUID().toString();
+        LocalDateTime expired = LocalDateTime.now().plusHours(1);
+
+        Coupon coupon = new Coupon();
+        coupon.setCoupon(targetCouponSerial);
+
+        coupon.setStatus(CouponStatus.USE);
+        coupon.setExpiredTimestamp(expired);
+        coupon.setRegTimestamp(LocalDateTime.MAX);
+        couponRepository.saveAndFlush(coupon);
+
+        mockMvc.perform(delete(String.format(url, targetCouponSerial)))
+                .andExpect(status().isOk())
+                .andDo(print());
+        assertEquals(couponRepository.findFirstByCouponEquals(targetCouponSerial).getStatus(), CouponStatus.ASSIGN);
     }
 
 
