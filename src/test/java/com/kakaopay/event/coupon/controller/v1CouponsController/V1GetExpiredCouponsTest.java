@@ -38,7 +38,7 @@ class V1GetExpiredCouponsTest {
     private CouponRepository couponRepository;
 
     private ObjectMapper objectMapper = new ObjectMapper();
-    private final String url = "/v1/coupons/expired";
+    private final String url = "/v1/coupons/1expired";
 
     @BeforeEach
     void setup() {
