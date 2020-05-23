@@ -21,13 +21,14 @@ public class CouponService {
 
     @Transactional
     public List<String> createCoupons(int couponSize, LocalDateTime expiredTime) {
+        LocalDateTime createTime = LocalDateTime.now();
         List<String> coupons = new ArrayList<>(couponSize);
         for (int i = 0; i < couponSize; i++) {
             String ticket = UUID.randomUUID().toString();
             Coupon coupon = new Coupon();
             coupon.setCoupon(ticket);
             coupon.setStatus(CouponStatus.CREATE);
-            coupon.setRegTimestamp(LocalDateTime.now());
+            coupon.setRegTimestamp(createTime);
             coupon.setExpiredTimestamp(expiredTime);
             //TODO : Duplicate Exception 발생시 다른 UUID로 넣게 변경한다.
             if (couponRepository.save(coupon).getCouponId() != null) {
