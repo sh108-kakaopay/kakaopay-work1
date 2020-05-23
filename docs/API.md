@@ -11,7 +11,6 @@
 | expired-datetime | 만료시간을 입력합니다 | Form | [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)  | ISO8601  Validation(**2016-10-27T17:13:40+00:00)**  |
 
 ### Response
-
 ### Success (200 OKAY)
 
 ``` json
@@ -56,6 +55,11 @@
 
 ## [GET] /v1/coupon/{serial}
 ### 사용자에게 지급된 쿠폰을 조회하는 API
+### Request
+| 파라미터명 | 설명 | 요청방식 | 타입 | 비고 |
+| ----- | --- | ---- | --- | --- |
+| serial | 쿠폰번호 | PathVariable | String(36) |  |
+
 ### Response
 ### Success (200 OKAY)
 ``` json
@@ -74,13 +78,14 @@
 | 500 | 서버 오류 입니다.<br>예상치못한 서버 오류가 발생한 경우 입니다. |  |
 
 ## [PUT] /v1/coupon/{serial}/assign
-
 ### 쿠폰 지급 API
+### Request
+| 파라미터명 | 설명 | 요청방식 | 타입 | 비고 |
+| ----- | --- | ---- | --- | --- |
+| serial | 쿠폰번호 | PathVariable | String(36) |  |
 
 ### Response
-
 ### Success (200 OKAY)
-
 ``` http
 empty response
 ```
@@ -96,11 +101,13 @@ empty response
 
 
 ## [PUT] /v1/coupon/{serial}/use
-
 ### 지급된 쿠폰을 사용하는 API
+### Request
+| 파라미터명 | 설명 | 요청방식 | 타입 | 비고 |
+| ----- | --- | ---- | --- | --- |
+| serial | 쿠폰번호 | PathVariable | String(36) |  |
 
 ### Response
-
 ### Success (200 OKAY)
 
 ``` http
@@ -120,6 +127,11 @@ empty response
 
 ## [DELETE] /v1/coupon/{serial}/use
 ### 지급된 쿠폰을 사용취소하는 API
+### Request
+| 파라미터명 | 설명 | 요청방식 | 타입 | 비고 |
+| ----- | --- | ---- | --- | --- |
+| serial | 쿠폰번호 | PathVariable | String(36) |  |
+
 ### Response
 ### Success (200 OKAY)
 ``` http
