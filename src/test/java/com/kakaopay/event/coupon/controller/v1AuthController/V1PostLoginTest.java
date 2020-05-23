@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -93,15 +94,18 @@ public class V1PostLoginTest {
     @Test
     @DisplayName("[S] 로그인 성공")
     void 정상적으로_로그인이_잘되는가() throws Exception {
-
-        String username = "yangs";
-        User user = userService.signup(username, username);
+        String username = "a";
+        String password = "b";
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(new BCryptPasswordEncoder().encode(password));
+        userRepository.saveAndFlush(user);
 
         MvcResult result = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
                         "username", username,
-                        "password", username
+                        "password", password
                 ))
         ).andExpect(
                 status().isOk()
