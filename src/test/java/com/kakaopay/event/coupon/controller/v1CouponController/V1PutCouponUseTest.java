@@ -63,7 +63,7 @@ class V1PutCouponUseTest {
                 put(String.format(url, UUID.randomUUID().toString()))
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();
@@ -91,7 +91,7 @@ class V1PutCouponUseTest {
                 put(String.format(url, targetCouponSerial))
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();
@@ -105,7 +105,7 @@ class V1PutCouponUseTest {
     @DisplayName("[E] 36자리에 맞춰서 요청하지 않았을경우")
     void 시리얼을_36자리에_맞춰서_요청하지_않았을경우() throws Exception {
         mockMvc.perform(
-                put(String.format(url, UUID.randomUUID().toString()))
+                put(String.format(url, UUID.randomUUID().toString() + "1"))
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isBadRequest()

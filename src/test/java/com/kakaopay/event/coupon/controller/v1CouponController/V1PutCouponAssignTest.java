@@ -63,7 +63,7 @@ class V1PutCouponAssignTest {
                 put(String.format(url, UUID.randomUUID().toString()))
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();
@@ -91,7 +91,7 @@ class V1PutCouponAssignTest {
                 put(String.format(url, targetCouponSerial))
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();
@@ -118,7 +118,7 @@ class V1PutCouponAssignTest {
                 put(String.format(url, targetCouponSerial))
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();

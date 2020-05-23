@@ -63,7 +63,7 @@ class V1DeleteCouponCancelTest {
         MvcResult result = mockMvc.perform(
                 delete(String.format(url, UUID.randomUUID().toString())).header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();
@@ -91,7 +91,7 @@ class V1DeleteCouponCancelTest {
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
 
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();
@@ -117,7 +117,7 @@ class V1DeleteCouponCancelTest {
         MvcResult result = mockMvc.perform(
                 delete(String.format(url, targetCouponSerial))
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
-        ).andExpect(status().isBadRequest())
+        ).andExpect(status().isNotAcceptable())
                 .andDo(print())
                 .andReturn();
 

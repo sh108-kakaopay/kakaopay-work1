@@ -66,7 +66,7 @@ class V1GetCouponTest {
                 get(url + UUID.randomUUID().toString())
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();
@@ -93,7 +93,7 @@ class V1GetCouponTest {
                 get(url + targetCouponSerial)
                         .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
-                status().isBadRequest()
+                status().isNotAcceptable()
         ).andDo(
                 print()
         ).andReturn();
