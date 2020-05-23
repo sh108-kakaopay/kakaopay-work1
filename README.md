@@ -57,3 +57,4 @@
 ## 문서화
 - [API](./docs/API.md)
 - [환경](./docs/ENV.md)
+- [설정파일](./docs/SETTINGS.md)
