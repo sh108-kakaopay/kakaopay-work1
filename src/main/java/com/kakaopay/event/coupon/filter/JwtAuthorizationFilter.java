@@ -1,5 +1,6 @@
 package com.kakaopay.event.coupon.filter;
 
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.kakaopay.event.coupon.util.JwtUtil;
@@ -50,8 +51,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 return null;
             }
             return new UsernamePasswordAuthenticationToken(username, result.getPayload(), new ArrayList<>());
+        } catch (SignatureVerificationException e2) {
+            logger.warn(String.format("%s, Token=%s", e2.getMessage(), token));
         } catch (TokenExpiredException e) {
             return null;
         }
+        return null;
     }
 }
