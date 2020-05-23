@@ -15,6 +15,6 @@ public class AuthHeaderTestUtil {
     }
 
     public String headerValue() {
-        return "Bearer " + jwtUtil.encode("yangs", LocalDateTime.now());
+        return "Bearer " + jwtUtil.encode("yangs", LocalDateTime.now().plusHours(1));
     }
 }
