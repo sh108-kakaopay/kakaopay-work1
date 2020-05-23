@@ -25,7 +25,7 @@ public class ErrorResponseConfig {
         return new V1ErrorMessage(null, uuid);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ExceptionHandler(CouponException.class)
     public V1CouponErrorResponse couponException(CouponException e) {
         return new V1CouponErrorResponse(e.getStatus().value);
