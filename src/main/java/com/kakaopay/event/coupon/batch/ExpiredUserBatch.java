@@ -15,7 +15,7 @@ public class ExpiredUserBatch {
     private final CouponService couponService;
 
 
-    @Scheduled(cron = "00 09 * * * *")
+    @Scheduled(cron = "00 00 09 * * *")
     public void run() {
         if (appConfig.isBatchEnable() == false) {
             return;
