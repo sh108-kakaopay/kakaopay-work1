@@ -58,4 +58,4 @@
 - [API](./docs/API.md)
 - [환경](./docs/ENV.md)
 - [설정파일](./docs/SETTINGS.md)
-- [실행방법](./docs/RUN.md)
+- [빌드 및 실행방법](./docs/RUN.md)
