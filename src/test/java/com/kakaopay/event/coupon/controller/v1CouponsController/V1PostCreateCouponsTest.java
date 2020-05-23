@@ -18,7 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -52,14 +52,14 @@ class V1PostCreateCouponsTest {
     @Test
     @DisplayName("[S] 쿠폰 100개 넣기")
     void 쿠폰요청() throws Exception {
-        LocalDateTime localDateTime = LocalDateTime.now().plusHours(1);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
 
         MvcResult result = mockMvc.perform(post(url)
                 .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
                         "coupon-size", "100",
-                        "expired-datetime", localDateTime.toString()
+                        "expired-datetime", zonedDateTime.toString()
                 ))
         ).andExpect(
                 status().isOk()
@@ -72,7 +72,7 @@ class V1PostCreateCouponsTest {
             Coupon coupon = couponRepository.findFirstByCouponEquals(couponSerial);
             assertNotNull(coupon);
             assertEquals(coupon.getStatus(), CouponStatus.CREATE);
-            assertEquals(coupon.getExpiredTimestamp(), localDateTime);
+            assertEquals(coupon.getExpiredTimestamp(), zonedDateTime.toLocalDateTime());
         }
     }
 
