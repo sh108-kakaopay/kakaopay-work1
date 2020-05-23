@@ -1,7 +1,7 @@
 package com.kakaopay.event.coupon.controller;
 
 import com.kakaopay.event.coupon.domain.entity.Coupon;
-import com.kakaopay.event.coupon.domain.exception.InternalServerError;
+import com.kakaopay.event.coupon.domain.exception.InternalServerErrorException;
 import com.kakaopay.event.coupon.domain.response.V1CouponResultResponse;
 import com.kakaopay.event.coupon.service.CouponService;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class V1CouponController {
     @PutMapping("/{coupon-serial}/assign")
     public void allocate(@PathVariable("coupon-serial") @NotEmpty @Size(min = 36, max = 36) String couponSerial) {
         if (couponService.assignCoupon(couponSerial) == false) {
-            throw new InternalServerError();
+            throw new InternalServerErrorException();
         }
     }
 
@@ -40,7 +40,7 @@ public class V1CouponController {
     @PutMapping("/{coupon-serial}/use")
     public void use(@PathVariable("coupon-serial") @NotEmpty @Size(min = 36, max = 36) String couponSerial) {
         if (couponService.use(couponSerial) == false) {
-            throw new InternalServerError();
+            throw new InternalServerErrorException();
         }
     }
 
@@ -48,7 +48,7 @@ public class V1CouponController {
     @DeleteMapping("/{coupon-serial}/use")
     public void delete(@PathVariable("coupon-serial") @NotEmpty @Size(min = 36, max = 36) String couponSerial) {
         if (couponService.cancel(couponSerial) == false) {
-            throw new InternalServerError();
+            throw new InternalServerErrorException();
         }
     }
 }
