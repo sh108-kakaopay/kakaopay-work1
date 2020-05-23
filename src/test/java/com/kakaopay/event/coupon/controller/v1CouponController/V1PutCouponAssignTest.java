@@ -8,6 +8,7 @@ import com.kakaopay.event.coupon.domain.enums.CouponErrorStatus;
 import com.kakaopay.event.coupon.domain.enums.CouponStatus;
 import com.kakaopay.event.coupon.domain.response.V1CouponErrorResponse;
 import com.kakaopay.event.coupon.repository.CouponRepository;
+import com.kakaopay.event.coupon.util.AuthHeaderTestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,9 @@ class V1PutCouponAssignTest {
     @Autowired
     private CouponRepository couponRepository;
 
+    @Autowired
+    private AuthHeaderTestUtil authHeaderTestUtil;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final String url = "/v1/coupon/%s/assign";
 
@@ -57,6 +61,7 @@ class V1PutCouponAssignTest {
     void 없는_쿠폰을_요청_했을때_에러() throws Exception {
         MvcResult result = mockMvc.perform(
                 put(String.format(url, UUID.randomUUID().toString()))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -84,6 +89,7 @@ class V1PutCouponAssignTest {
 
         MvcResult result = mockMvc.perform(
                 put(String.format(url, targetCouponSerial))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -110,6 +116,7 @@ class V1PutCouponAssignTest {
 
         MvcResult result = mockMvc.perform(
                 put(String.format(url, targetCouponSerial))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -126,6 +133,7 @@ class V1PutCouponAssignTest {
     void 시리얼을_36자리에_맞춰서_요청하지_않았을경우() throws Exception {
         mockMvc.perform(
                 put(String.format(url, UUID.randomUUID().toString() + "1"))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -150,6 +158,7 @@ class V1PutCouponAssignTest {
 
         mockMvc.perform(
                 put(String.format(url, targetCouponSerial))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isOk()
         ).andDo(

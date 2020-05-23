@@ -8,6 +8,7 @@ import com.kakaopay.event.coupon.domain.enums.CouponErrorStatus;
 import com.kakaopay.event.coupon.domain.enums.CouponStatus;
 import com.kakaopay.event.coupon.domain.response.V1CouponErrorResponse;
 import com.kakaopay.event.coupon.repository.CouponRepository;
+import com.kakaopay.event.coupon.util.AuthHeaderTestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,9 @@ class V1DeleteCouponCancelTest {
     @Autowired
     private CouponRepository couponRepository;
 
+    @Autowired
+    private AuthHeaderTestUtil authHeaderTestUtil;
+
     private ObjectMapper objectMapper = new ObjectMapper();
     private final String url = "/v1/coupon/%s/use";
 
@@ -57,13 +61,12 @@ class V1DeleteCouponCancelTest {
     @DisplayName("[E] 없는 쿠폰을 요청 했을때 에러")
     void 없는_쿠폰을_요청_했을때_에러() throws Exception {
         MvcResult result = mockMvc.perform(
-                delete(String.format(url, UUID.randomUUID().toString()))
-        )
-                .andExpect(
-                        status().isBadRequest()
-                ).andDo(
-                        print()
-                ).andReturn();
+                delete(String.format(url, UUID.randomUUID().toString())).header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
+        ).andExpect(
+                status().isBadRequest()
+        ).andDo(
+                print()
+        ).andReturn();
         V1CouponErrorResponse v1CouponErrorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
         assertNotNull(v1CouponErrorResponse);
         assertEquals(v1CouponErrorResponse.getErrorCode(), CouponErrorStatus.NOT_FOUND.value);
@@ -85,12 +88,13 @@ class V1DeleteCouponCancelTest {
 
         MvcResult result = mockMvc.perform(
                 delete(String.format(url, targetCouponSerial))
-        )
-                .andExpect(
-                        status().isBadRequest()
-                ).andDo(
-                        print()
-                ).andReturn();
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
+
+        ).andExpect(
+                status().isBadRequest()
+        ).andDo(
+                print()
+        ).andReturn();
         V1CouponErrorResponse v1CouponErrorResponse = new ObjectMapper().readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
         assertNotNull(v1CouponErrorResponse);
         assertEquals(v1CouponErrorResponse.getErrorCode(), CouponErrorStatus.EXPIRED.value);
@@ -112,8 +116,8 @@ class V1DeleteCouponCancelTest {
 
         MvcResult result = mockMvc.perform(
                 delete(String.format(url, targetCouponSerial))
-        )
-                .andExpect(status().isBadRequest())
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
+        ).andExpect(status().isBadRequest())
                 .andDo(print())
                 .andReturn();
 
@@ -138,9 +142,10 @@ class V1DeleteCouponCancelTest {
         coupon.setRegTimestamp(LocalDateTime.MAX);
         couponRepository.saveAndFlush(coupon);
 
-        mockMvc.perform(delete(String.format(url, targetCouponSerial)))
-                .andExpect(status().isOk())
-                .andDo(print());
+        mockMvc.perform(
+                delete(String.format(url, targetCouponSerial))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
+        ).andExpect(status().isOk()).andDo(print());
         assertEquals(couponRepository.findFirstByCouponEquals(targetCouponSerial).getStatus(), CouponStatus.ASSIGN);
     }
 

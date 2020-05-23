@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakaopay.event.coupon.domain.entity.Coupon;
 import com.kakaopay.event.coupon.domain.enums.CouponStatus;
 import com.kakaopay.event.coupon.repository.CouponRepository;
+import com.kakaopay.event.coupon.util.AuthHeaderTestUtil;
 import com.kakaopay.event.coupon.util.MockMvcTestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -36,15 +37,17 @@ class V1PostCreateCouponsTest {
     @Autowired
     private CouponRepository couponRepository;
 
+    @Autowired
+    private AuthHeaderTestUtil authHeaderTestUtil;
+
+
     private ObjectMapper objectMapper = new ObjectMapper();
     private final String url = "/v1/coupons";
-
 
     @AfterEach
     void tearDown() {
         couponRepository.deleteAll();
     }
-
 
     @Test
     @DisplayName("[S] 쿠폰 100개 넣기")
@@ -52,6 +55,7 @@ class V1PostCreateCouponsTest {
         LocalDateTime localDateTime = LocalDateTime.now().plusHours(1);
 
         MvcResult result = mockMvc.perform(post(url)
+                .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
                         "coupon-size", "100",

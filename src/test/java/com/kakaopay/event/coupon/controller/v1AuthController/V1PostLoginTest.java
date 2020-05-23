@@ -46,6 +46,7 @@ public class V1PostLoginTest {
     @Autowired
     private JwtUtil jwtUtil;
 
+
     private final String url = "/v1/auth/login";
     private ObjectMapper objectMapper = new ObjectMapper();
 

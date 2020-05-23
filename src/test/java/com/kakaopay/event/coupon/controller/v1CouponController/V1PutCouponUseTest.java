@@ -8,6 +8,7 @@ import com.kakaopay.event.coupon.domain.enums.CouponErrorStatus;
 import com.kakaopay.event.coupon.domain.enums.CouponStatus;
 import com.kakaopay.event.coupon.domain.response.V1CouponErrorResponse;
 import com.kakaopay.event.coupon.repository.CouponRepository;
+import com.kakaopay.event.coupon.util.AuthHeaderTestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,10 @@ class V1PutCouponUseTest {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @Autowired
+    private AuthHeaderTestUtil authHeaderTestUtil;
+
     private final String url = "/v1/coupon/%s/use";
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -56,6 +61,7 @@ class V1PutCouponUseTest {
     void 없는_쿠폰을_요청_했을때_에러() throws Exception {
         MvcResult result = mockMvc.perform(
                 put(String.format(url, UUID.randomUUID().toString()))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -83,6 +89,7 @@ class V1PutCouponUseTest {
 
         MvcResult result = mockMvc.perform(
                 put(String.format(url, targetCouponSerial))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -99,6 +106,7 @@ class V1PutCouponUseTest {
     void 시리얼을_36자리에_맞춰서_요청하지_않았을경우() throws Exception {
         mockMvc.perform(
                 put(String.format(url, UUID.randomUUID().toString()))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isBadRequest()
         ).andDo(
@@ -123,6 +131,7 @@ class V1PutCouponUseTest {
 
         mockMvc.perform(
                 put(String.format(url, targetCouponSerial))
+                        .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
         ).andExpect(
                 status().isOk()
         ).andDo(

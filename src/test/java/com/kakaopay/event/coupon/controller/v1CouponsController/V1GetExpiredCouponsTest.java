@@ -7,6 +7,7 @@ import com.kakaopay.event.coupon.domain.entity.Coupon;
 import com.kakaopay.event.coupon.domain.enums.CouponStatus;
 import com.kakaopay.event.coupon.domain.response.V1CouponResultResponse;
 import com.kakaopay.event.coupon.repository.CouponRepository;
+import com.kakaopay.event.coupon.util.AuthHeaderTestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +38,9 @@ class V1GetExpiredCouponsTest {
     @Autowired
     private CouponRepository couponRepository;
 
+    @Autowired
+    private AuthHeaderTestUtil authHeaderTestUtil;
+
     private ObjectMapper objectMapper = new ObjectMapper();
     private final String url = "/v1/coupons/expired";
 
@@ -54,12 +58,14 @@ class V1GetExpiredCouponsTest {
     @Test
     @DisplayName("[S] 디비에 아무것도 없을때도 빈 List Return")
     void 디비에_아무것도_없을때도_빈값() throws Exception {
-        MvcResult result = mockMvc.perform(get(url))
-                .andExpect(
-                        status().isOk()
-                ).andDo(
-                        print()
-                ).andReturn();
+        MvcResult result = mockMvc.perform(
+                get(url).header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
+
+        ).andExpect(
+                status().isOk()
+        ).andDo(
+                print()
+        ).andReturn();
         V1CouponResultResponse[] v1CouponErrorResponses = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponResultResponse[].class);
         assertEquals(v1CouponErrorResponses.length, 0);
     }
@@ -79,12 +85,13 @@ class V1GetExpiredCouponsTest {
 
         couponRepository.saveAndFlush(coupon);
 
-        MvcResult result = mockMvc.perform(get(url))
-                .andExpect(
-                        status().isOk()
-                ).andDo(
-                        print()
-                ).andReturn();
+        MvcResult result = mockMvc.perform(
+                get(url).header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
+        ).andExpect(
+                status().isOk()
+        ).andDo(
+                print()
+        ).andReturn();
         V1CouponResultResponse[] v1CouponErrorResponses = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponResultResponse[].class);
         assertEquals(v1CouponErrorResponses.length, 0);
     }
@@ -102,12 +109,13 @@ class V1GetExpiredCouponsTest {
         coupon.setRegTimestamp(LocalDateTime.MAX);
         couponRepository.saveAndFlush(coupon);
 
-        MvcResult result = mockMvc.perform(get(url))
-                .andExpect(
-                        status().isOk()
-                ).andDo(
-                        print()
-                ).andReturn();
+        MvcResult result = mockMvc.perform(
+                get(url).header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
+        ).andExpect(
+                status().isOk()
+        ).andDo(
+                print()
+        ).andReturn();
         V1CouponResultResponse[] v1CouponErrorResponses = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponResultResponse[].class);
         assertEquals(v1CouponErrorResponses.length, 1);
         assertEquals(v1CouponErrorResponses[0].getSerial(), targetCouponSerial);
