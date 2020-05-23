@@ -6,15 +6,19 @@ import com.kakaopay.event.coupon.domain.enums.CouponStatus;
 import com.kakaopay.event.coupon.domain.exception.CouponException;
 import com.kakaopay.event.coupon.repository.CouponRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class CouponService {
     private final CouponRepository couponRepository;
@@ -30,7 +34,7 @@ public class CouponService {
             coupon.setStatus(CouponStatus.CREATE);
             coupon.setRegTimestamp(createTime);
             coupon.setExpiredTimestamp(expiredTime);
-            //TODO : Duplicate Exception 발생시 다른 UUID로 넣게 변경한다.
+
             if (couponRepository.save(coupon).getCouponId() != null) {
                 coupons.add(ticket);
             }
@@ -84,6 +88,20 @@ public class CouponService {
     }
 
     public List<Coupon> getTodayExpiredList() {
-        return couponRepository.findByExpiredTimestampLessThanEqual(LocalDateTime.now());
+        LocalDate now = LocalDate.now();
+        LocalDateTime start = LocalDateTime.of(now, LocalTime.of(0, 0, 0));
+        LocalDateTime end = LocalDateTime.of(now, LocalTime.of(23, 59, 59));
+        return couponRepository.findByExpiredTimestampBetweenAndStatusEquals(start, end, CouponStatus.ASSIGN);
+    }
+
+    public boolean sendExpiredMessage(int day) {
+        LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(day), LocalTime.of(0, 0, 0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.now().minusDays(day), LocalTime.of(23, 59, 59));
+        List<Coupon> expiredTargets = couponRepository.findByExpiredTimestampBetweenAndStatusEquals(start, end, CouponStatus.ASSIGN);
+        expiredTargets.forEach(item -> {
+            log.info(String.format("Send Message : %s 티켓이 3일 뒤에 만료 됩니다.", item.getCoupon()));
+        });
+
+        return false;
     }
 }
