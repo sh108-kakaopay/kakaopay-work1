@@ -1,6 +1,8 @@
 package com.kakaopay.event.coupon.config;
 
 import com.kakaopay.event.coupon.domain.exception.CouponException;
+import com.kakaopay.event.coupon.domain.exception.InternalServerErrorException;
+import com.kakaopay.event.coupon.domain.exception.UnauthorizedException;
 import com.kakaopay.event.coupon.domain.response.V1CouponErrorResponse;
 import com.kakaopay.event.coupon.domain.response.V1ErrorMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,17 @@ public class ErrorResponseConfig {
     @ExceptionHandler(CouponException.class)
     public V1CouponErrorResponse couponException(CouponException e) {
         return new V1CouponErrorResponse(e.getStatus().value);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnauthorizedException.class)
+    public void unauthorizedException() {
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(InternalServerErrorException.class)
+    public void internalServerErrorException() {
+
     }
 
 }
