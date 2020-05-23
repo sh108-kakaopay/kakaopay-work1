@@ -30,7 +30,7 @@
 
 
 ## [GET] /v1/coupons/expired
-### 오늘 미사용 쿠폰중 만료 API 
+### 오늘 미사용 쿠폰중 만료 쿠폰을 반환 하는 API 
 ### Response
 ### Success (200 OKAY)
 ``` json
