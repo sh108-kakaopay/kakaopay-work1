@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.Verification;
-import com.kakaopay.event.coupon.config.JwtProperties;
+import com.kakaopay.event.coupon.config.JwtConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +14,14 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private final JwtProperties jwtProperties;
+    private final JwtConfig jwtConfig;
     private final byte[] key;
     private final Verification jwtVerification;
 
     @Autowired
-    public JwtUtil(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
-        this.key = jwtProperties.getSecret().getBytes();
+    public JwtUtil(JwtConfig jwtConfig) {
+        this.jwtConfig = jwtConfig;
+        this.key = jwtConfig.getSecret().getBytes();
         this.jwtVerification = JWT.require(Algorithm.HMAC512(key));
     }
 
@@ -37,6 +37,6 @@ public class JwtUtil {
     }
 
     public LocalDateTime buildExpiredTimestamp() {
-        return LocalDateTime.now().plusHours(jwtProperties.getTokenAvailableHour());
+        return LocalDateTime.now().plusHours(jwtConfig.getTokenAvailableHour());
     }
 }
