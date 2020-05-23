@@ -12,7 +12,7 @@
 - [x] 숫자 N을 요청하면 N개 만큼 쿠폰을 발급하는 API
     - INPUT으로 N개를 선택 받으면, 디비에 Insert 하게 개발.
     서비스 성능을 고려하여, 한 요청당 1000개 까지 가능하게 함.
-    - [UUID4(UUID.randomUUID())](https://en.wikipedia.org/wiki/Universally_unique_identifier){:target="_blank"}를 통한 유니크 쿠폰 키 생성
+    - [UUID4(UUID.randomUUID())](https://en.wikipedia.org/wiki/Universally_unique_identifier){:target="_blank"} 를 통한 유니크 쿠폰 키 생성
     - 데이터베이스의 유니크 인덱스를 통한 유니크 보장
    
 - [x] 생성된 쿠폰중 하나를 사용자에게 지급하는 API
