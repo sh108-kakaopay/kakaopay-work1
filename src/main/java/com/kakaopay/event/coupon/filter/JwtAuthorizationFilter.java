@@ -1,5 +1,6 @@
 package com.kakaopay.event.coupon.filter;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.kakaopay.event.coupon.util.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,11 +43,15 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         if (token == null) {
             return null;
         }
-        DecodedJWT result = jwtUtil.decode(token.replace(tokenPrefix, ""));
-        String username = result.getSubject();
-        if (username == null) {
+        try {
+            DecodedJWT result = jwtUtil.decode(token.replace(tokenPrefix, ""));
+            String username = result.getSubject();
+            if (username == null) {
+                return null;
+            }
+            return new UsernamePasswordAuthenticationToken(username, result.getPayload(), new ArrayList<>());
+        } catch (TokenExpiredException e) {
             return null;
         }
-        return new UsernamePasswordAuthenticationToken(username, result.getPayload(), new ArrayList<>());
     }
 }
