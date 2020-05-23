@@ -49,6 +49,25 @@ class V1PostCreateCouponsTest {
         couponRepository.deleteAll();
     }
 
+
+    @Test
+    @DisplayName("[E] 쿠폰 10000개 이상 넣으면 Bad Request")
+    void 쿠폰이_만개이상이라면_BAD_REQUEST() throws Exception {
+        mockMvc.perform(post(url)
+                .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
+                        "coupon-size", "10001",
+                        "expired-datetime", ZonedDateTime.now().toString()
+                ))
+        ).andExpect(
+                status().isBadRequest()
+        ).andDo(
+                print()
+        );
+    }
+
+
     @Test
     @DisplayName("[S] 쿠폰 100개 넣기")
     void 쿠폰요청() throws Exception {
