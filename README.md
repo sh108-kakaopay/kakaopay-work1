@@ -51,8 +51,8 @@
 - [ ] 성능테스트 결과 / 피드백
 - [ ] 10만개 이상 벌크 csv Import 기능
 - [x] 발급된 쿠폰중 만료 3일전 사용자에게 메세지(“쿠폰이 3일 후 만료됩니다.”)를 발송하는 기능을 구현하세요. (실제 메세지를 발송하는것이 아닌 stdout 등으로 출력하시면 됩니다.)
-    - Spring Batch 를 통해 개발하는것이 failover, Task 관리, lifeCycle 관리 등 더 이점이 많으나, 배보다 배꼽이 커지는 현상이 있기 떄문에 
-    - Spring Scheduled 를 통해 동작하게 설계. 실 서비스시, Batch가 동작하는 Application을 따로 올리거나, 특정서버에는 배치를 활성화 하는 flag on 필요.
+    - Spring Batch 를 통해 개발하는것이 failover, Task 관리, lifeCycle 관리 등 더 이점이 많으나, 배보다 배꼽이 커지는 현상이 있기 떄문
+    - Spring Scheduled (매일 아침 09시에 발송. 푸시 전송 관련 법안 이슈를 고려.)를 통해 동작하게 설계. 실 서비스시, Batch가 동작하는 Application을 따로 올리거나, 특정서버에는 배치를 활성화 하는 flag on 필요.
     
 ## 문서화
 - [API](./docs/API.md)
