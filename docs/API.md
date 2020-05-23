@@ -1,58 +1,112 @@
+# API
 
-# API 
-## 공통 스펙 
+## 공통 스펙
+<br>
+쿠폰 서비스 오류 코드
 
-
-## [POST] /v1/coupons 
-## 숫자 N을 요청하면 N개 만큼 쿠폰을 발급하는 API
-### Request
-~~테이블~~
-### Response
-### Success (200 OKAY)
+| 상태코드 | 설명 | 비고 |
+| ---- | --- | --- |
+| 401 | 권한이 없습니다.<br>토큰이 없거나, 만료된 경우 입니다. |  |
+| 500 | 서버 오류 입니다.<br>예상치못한 서버 오류가 발생한 경우 입니다. |  |
+<br>
+### 쿠폰 서비스 오류 코드
 ```json
+{
+    "errorCode" : -1001
+}
+```
+<br>
+| 오류코드 | 설명 | 비고 |
+| ---- | --- | --- |
+| -1000 | 만료된 쿠폰 입니다. |  |
+| -1001 | 상태에 맞지 않는 요청 입니다<br>ex) 할당되지 않은 상태의 쿠폰을 사용 하려고 하거나 |  |
+| -1002 | 존재하지 않는 쿠폰 입니다. |  |
+
+## [POST] /v1/coupons
+
+## 숫자 N을 요청하면 N개 만큼 쿠폰을 발급하는 API
+
+### Request
+
+| 파라미터명 | 설명 | 요청방식 | 타입 | 비고 |
+| ----- | :--- | ---- | --- | --- |
+| coupon-size | 생성할 쿠폰의 수를 입력 합니다. | Form | int | 요청 당 최대 10,000건 |
+| <span style="color:#6a8759;">expired-datetime</span> | 만료시간을 입력합니다 | Form | ISO8601  | ISO8601  Validation(**2016-10-27T17:13:40+00:00)** |
+
+### Response
+
+### Success (200 OKAY)
+
+``` json
 [
     "52a40c98-5a96-4017-b2d5-8a80d676d4e7"
 ]
 ```
 
-### Error 
-~~테이블~~
+### Error
 
-
+| 상태코드 | 설명 | 비고 |
+| ---- | --- | --- |
+| 400 | 잘못된 요청 입니다.<br>coupon-size가 제한을 넘었거나, 이미 만료된 쿠폰 인 경우  |  |
+| 401 | 권한이 없습니다.<br>토큰이 없거나, 만료된 경우 입니다. |  |
+| 500 | 서버 오류 입니다.<br>예상치못한 서버 오류가 발생한 경우 입니다. |  |
 
 ## [GET] /v1/coupon/{serial}
+
 ### 사용자에게 지급된 쿠폰을 조회하는 API
+
 ### Response
+
 ### Success (200 OKAY)
-```json
+
+``` json
 {
     "serial": "c32663dd-3a26-41fe-b660-079fadb7b8b5",
     "expired": "2024-10-27T17:13:40+00:00"
 }
 ```
 
+### Error
+
+| 상태코드 | 설명 | 비고 |
+| ---- | --- | --- |
+| 400 | 잘못된 요청 입니다.<br>{serial} 쿠폰번호가 36자리가 아닌 경우 발생 합니다. |  |
+| 401 | 권한이 없습니다.<br>토큰이 없거나, 만료된 경우 입니다. |  |
+| 406 | 쿠폰 관련 서비스 오류가 발생한 경우 입니다.<br>공통스펙->쿠폰서비스오류코드 를 참고. |  |
+| 500 | 서버 오류 입니다.<br>예상치못한 서버 오류가 발생한 경우 입니다. |  |
+
 ## [PUT] /v1/coupon/{serial}/assign
+
 ### 쿠폰 지급 API
+
 ### Response
+
 ### Success (200 OKAY)
-```http request
+
+``` http
 empty response
 ```
 
-
-
 ## [PUT] /v1/coupon/{serial}/use
+
 ### 지급된 쿠폰을 사용하는 API
+
 ### Response
+
 ### Success (200 OKAY)
-```http request
+
+``` http
 empty response
 ```
 
 ## [DELETE] /v1/coupon/{serial}/use
-### 지급된 쿠폰을 사용취소하는 API 
+
+### 지급된 쿠폰을 사용취소하는 API
+
 ### Response
+
 ### Success (200 OKAY)
-```http request
+
+``` http
 empty response
 ```
