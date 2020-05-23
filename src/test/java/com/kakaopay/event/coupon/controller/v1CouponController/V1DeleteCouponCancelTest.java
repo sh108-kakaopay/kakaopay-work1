@@ -95,7 +95,7 @@ class V1DeleteCouponCancelTest {
         ).andDo(
                 print()
         ).andReturn();
-        V1CouponErrorResponse v1CouponErrorResponse = new ObjectMapper().readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
+        V1CouponErrorResponse v1CouponErrorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
         assertNotNull(v1CouponErrorResponse);
         assertEquals(v1CouponErrorResponse.getErrorCode(), CouponErrorStatus.EXPIRED.value);
     }
@@ -121,7 +121,7 @@ class V1DeleteCouponCancelTest {
                 .andDo(print())
                 .andReturn();
 
-        V1CouponErrorResponse v1CouponErrorResponse = new ObjectMapper().readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
+        V1CouponErrorResponse v1CouponErrorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponErrorResponse.class);
         assertNotNull(v1CouponErrorResponse);
         assertEquals(v1CouponErrorResponse.getErrorCode(), CouponErrorStatus.NOT_ASSIGN.value);
 
