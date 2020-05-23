@@ -39,11 +39,10 @@
 - [x] API 인증을 위해 JWT(Json Web Token)를 이용해서 Token 기반 API 인증 기능을 개발하고 각 API 호출 시에 HTTP Header에 발급받은 토큰을 가지고 호출하세요.
     - Spring Security를 통한 인증 필터 기능 구현 
     - OAuth2를 통해 로그인 하는 API를 개발 하려고 하였으나, 배보다 배꼽이 커지는 상황이 생겨 일반 로그인으로 구현.
-    
+    - '단, 패스워드는 안전한 방법으로 저장한다.' [BCrypt](https://en.wikipedia.org/wiki/Bcrypt) 방식의 암호화 채택
 - [x] 100억개 이상 쿠폰 관리 저장 관리 가능하도록 구현할것
     - Long Type을 통해 저장 가능하게변경.
     - 파티셔닝에 대한 고민을 하였으나, 어떤 DBMS를 사용할지 구체적인 명시가 되어있지 않기 때문에 진행 불가.
-
 - [x] 대용량 트래픽(TPS 10K 이상)을 고려한 시스템 구현
     - Application에 대해 `StateLess` 한 설계 및 개발 
     - LB를 위한 하트비트 API 추가
