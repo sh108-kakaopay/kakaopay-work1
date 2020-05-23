@@ -8,8 +8,8 @@ import com.kakaopay.event.coupon.config.JwtProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 @Component
@@ -32,7 +32,7 @@ public class JwtUtil {
     public String encode(String username, LocalDateTime expiredTimestamp) {
         return JWT.create()
                 .withSubject(username)
-                .withExpiresAt(Date.from(expiredTimestamp.toInstant(ZoneOffset.UTC)))
+                .withExpiresAt(Date.from(expiredTimestamp.atZone(Clock.systemDefaultZone().getZone()).toInstant()))
                 .sign(Algorithm.HMAC512(key));
     }
 
