@@ -7,6 +7,7 @@ import com.kakaopay.event.coupon.domain.entity.User;
 import com.kakaopay.event.coupon.domain.response.V1AuthTokenResponse;
 import com.kakaopay.event.coupon.repository.UserRepository;
 import com.kakaopay.event.coupon.service.UserService;
+import com.kakaopay.event.coupon.util.AuthHeaderTestUtil;
 import com.kakaopay.event.coupon.util.JwtUtil;
 import com.kakaopay.event.coupon.util.MockMvcTestUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,6 +49,8 @@ public class V1PostLoginTest {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private AuthHeaderTestUtil authHeaderTestUtil;
 
     private final String url = "/v1/auth/login";
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -58,6 +63,14 @@ public class V1PostLoginTest {
     @AfterEach
     void tearDown() {
         userRepository.deleteAll();
+    }
+
+    @Test
+    @DisplayName("[E] 토큰이 시간이 지나면 잘 만료 되는가")
+    void 토큰이_시간이_지나면_만료되는가() throws Exception {
+        mockMvc.perform(
+                get("/").header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue(LocalDateTime.now().minusHours(1)))
+        ).andExpect(status().isUnauthorized()).andDo(print());
     }
 
     @Test
