@@ -9,6 +9,7 @@
 # 바로가기 
 ## CI/CD 
 - [Github Action](https://github.com/sh108-kakaopay/kakaopay-work1/actions) 
+(~~CD의 경우는 Artifact 용량 제한 , 현재 중단.~~)
 
 ## 문서화 
 - [API](./docs/API.md)

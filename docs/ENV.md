@@ -19,4 +19,4 @@
 ## 테스트 환경 
 - Runner : Github Action
 - OS : Ubuntu 18.04
-- Database : H2 
+- Database : H2
