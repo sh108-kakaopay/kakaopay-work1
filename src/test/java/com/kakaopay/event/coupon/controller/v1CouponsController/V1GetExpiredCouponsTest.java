@@ -80,8 +80,8 @@ class V1GetExpiredCouponsTest {
         coupon.setCoupon(targetCouponSerial);
 
         coupon.setStatus(CouponStatus.CREATE);
-        coupon.setExpiredTimestamp(LocalDateTime.now().plusHours(1));
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setExpiredTimestamp(LocalDateTime.now().plusDays(1));
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
 
@@ -95,7 +95,6 @@ class V1GetExpiredCouponsTest {
         V1CouponResultResponse[] v1CouponErrorResponses = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponResultResponse[].class);
         assertEquals(v1CouponErrorResponses.length, 0);
     }
-
 
     @Test
     @DisplayName("[S] 만료된 쿠폰 요청 ")

@@ -91,13 +91,13 @@ public class CouponService {
         LocalDate now = LocalDate.now();
         LocalDateTime start = LocalDateTime.of(now, LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(now, LocalTime.of(23, 59, 59));
-        return couponRepository.findByExpiredTimestampBetweenAndStatusEquals(start, end, CouponStatus.ASSIGN);
+        return couponRepository.findByExpiredTimestampBetween(start, end);
     }
 
     public boolean sendExpiredMessage(int day) {
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(day), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now().minusDays(day), LocalTime.of(23, 59, 59));
-        List<Coupon> expiredTargets = couponRepository.findByExpiredTimestampBetweenAndStatusEquals(start, end, CouponStatus.ASSIGN);
+        List<Coupon> expiredTargets = couponRepository.findByExpiredTimestampBetween(start, end);
         expiredTargets.forEach(item -> {
             log.info(String.format("Send Message : %s 티켓이 3일 뒤에 만료 됩니다.", item.getCoupon()));
         });
