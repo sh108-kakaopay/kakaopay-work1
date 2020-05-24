@@ -3,6 +3,7 @@
 - Spring Boot : 2.3.0.RELEASE
 - hibernate-core : 5.4.8 Final
 - jackson : 2.10.0
+- lombok : 1.18.12
 
 ## 최소 동작 환경 
 - Java : 1.8 이상
