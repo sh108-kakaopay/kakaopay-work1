@@ -32,14 +32,9 @@ public class Coupon implements Serializable {
     @Column(name = "coupon_status", nullable = false)
     private CouponStatus status;
 
-    @Column(name = "expired_timestamp", nullable = false)
-    private LocalDateTime expiredTimestamp;
-
-    @Column(name = "update_timestamp")
-    private LocalDateTime updateTimestamp;
-
     @Column(name = "reg_timestamp", nullable = false)
     private LocalDateTime regTimestamp;
 
-
+    @Column(name = "expired_timestamp", nullable = false)
+    private LocalDateTime expiredTimestamp;
 }
