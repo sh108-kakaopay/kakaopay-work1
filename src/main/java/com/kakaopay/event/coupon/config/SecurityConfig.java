@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil))
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/v1/hearbeat").permitAll()
+                .antMatchers(HttpMethod.GET, "/health").permitAll()
                 .antMatchers("/v1/auth/*").permitAll()
                 .anyRequest().authenticated();
     }
