@@ -82,7 +82,7 @@ class V1DeleteCouponCancelTest {
 
         coupon.setStatus(CouponStatus.CREATE);
         coupon.setExpiredTimestamp(LocalDateTime.now());
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
 
@@ -111,7 +111,7 @@ class V1DeleteCouponCancelTest {
 
         coupon.setStatus(CouponStatus.ASSIGN);
         coupon.setExpiredTimestamp(expired);
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
         couponRepository.saveAndFlush(coupon);
 
         MvcResult result = mockMvc.perform(
@@ -139,7 +139,7 @@ class V1DeleteCouponCancelTest {
 
         coupon.setStatus(CouponStatus.USE);
         coupon.setExpiredTimestamp(expired);
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
         couponRepository.saveAndFlush(coupon);
 
         mockMvc.perform(

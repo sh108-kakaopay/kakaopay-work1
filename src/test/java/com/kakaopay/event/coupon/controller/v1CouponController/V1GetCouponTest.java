@@ -85,7 +85,7 @@ class V1GetCouponTest {
 
         coupon.setStatus(CouponStatus.CREATE);
         coupon.setExpiredTimestamp(LocalDateTime.now());
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
 
@@ -114,7 +114,7 @@ class V1GetCouponTest {
 
         coupon.setStatus(CouponStatus.ASSIGN);
         coupon.setExpiredTimestamp(expired);
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
         couponRepository.saveAndFlush(coupon);
 
         MvcResult result = mockMvc.perform(

@@ -48,7 +48,7 @@ class CouponServiceTest {
 
         coupon.setStatus(CouponStatus.CREATE);
         coupon.setExpiredTimestamp(LocalDateTime.now().plusHours(1));
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
 
@@ -68,7 +68,7 @@ class CouponServiceTest {
 
         coupon.setStatus(CouponStatus.CREATE);
         coupon.setExpiredTimestamp(LocalDateTime.now().plusHours(1));
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
         assertTrue(couponService.assignCoupon(targetCouponSerial));
@@ -86,7 +86,7 @@ class CouponServiceTest {
 
         coupon.setStatus(CouponStatus.USE);
         coupon.setExpiredTimestamp(LocalDateTime.now().plusHours(1));
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
         assertTrue(couponService.cancel(targetCouponSerial));
@@ -103,10 +103,29 @@ class CouponServiceTest {
 
         coupon.setStatus(CouponStatus.ASSIGN);
         coupon.setExpiredTimestamp(LocalDateTime.now().plusHours(1));
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
         assertTrue(couponService.use(targetCouponSerial));
         assertEquals(couponRepository.findFirstByCouponEquals(targetCouponSerial).getStatus(), CouponStatus.USE);
+    }
+
+    @Test
+    @DisplayName("[S] 만료된 쿠폰만 가져와지는가")
+    void expired() {
+
+        String targetCouponSerial = UUID.randomUUID().toString();
+        Coupon coupon = new Coupon();
+        coupon.setCoupon(targetCouponSerial);
+
+        coupon.setStatus(CouponStatus.ASSIGN);
+        coupon.setExpiredTimestamp(LocalDateTime.now());
+        coupon.setRegTimestamp(LocalDateTime.now());
+        couponRepository.saveAndFlush(coupon);
+        List<Coupon> expiredCoupons = couponService.getTodayExpiredList();
+        assertNotNull(expiredCoupons);
+        assertEquals(expiredCoupons.size(), 1);
+
+
     }
 }

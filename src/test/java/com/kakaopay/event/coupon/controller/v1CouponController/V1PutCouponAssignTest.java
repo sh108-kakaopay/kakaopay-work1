@@ -83,7 +83,7 @@ class V1PutCouponAssignTest {
 
         coupon.setStatus(CouponStatus.CREATE);
         coupon.setExpiredTimestamp(LocalDateTime.now());
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
 
@@ -110,7 +110,7 @@ class V1PutCouponAssignTest {
 
         coupon.setStatus(CouponStatus.USE);
         coupon.setExpiredTimestamp(LocalDateTime.now().plusHours(1));
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
 
         couponRepository.saveAndFlush(coupon);
 
@@ -153,7 +153,7 @@ class V1PutCouponAssignTest {
 
         coupon.setStatus(CouponStatus.CREATE);
         coupon.setExpiredTimestamp(expired);
-        coupon.setRegTimestamp(LocalDateTime.MAX);
+        coupon.setRegTimestamp(LocalDateTime.now());
         couponRepository.saveAndFlush(coupon);
 
         mockMvc.perform(
