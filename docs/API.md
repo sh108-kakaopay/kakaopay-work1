@@ -7,7 +7,7 @@
 
 | 파라미터명 | 설명 | 요청방식 | 타입 | 비고 |
 | ----- | :--- | ---- | --- | --- |
-| coupon-size | 생성할 쿠폰의 수를 입력 합니다. | Form | int | 요청 당 최대 10,000건 |
+| coupon-size | 생성할 쿠폰의 수를 입력 합니다. | Form | int | 요청 당 최대 1,000건 |
 | expired-datetime | 만료시간을 입력합니다 | Form | [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)  | ISO8601  Validation(**2016-10-27T17:13:40+00:00)**  |
 
 ### Response

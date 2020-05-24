@@ -25,7 +25,7 @@ public class V1CouponsController {
 
     //1. 랜덤한 코드의 쿠폰을 N개 생성하여 데이터베이스에 보관하는 API를 구현하세요.
     @PostMapping("")
-    public List<String> createCoupon(@RequestParam("coupon-size") @Min(1) @Max(10000) int size,
+    public List<String> createCoupon(@RequestParam("coupon-size") @Min(1) @Max(1000) int size,
                                      @RequestParam("expired-datetime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime expired) {
         return couponService.createCoupons(size, expired.withZoneSameInstant(ZoneOffset.systemDefault()).toLocalDateTime());
     }
