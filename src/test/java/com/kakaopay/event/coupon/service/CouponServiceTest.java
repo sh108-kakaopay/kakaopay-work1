@@ -3,6 +3,7 @@ package com.kakaopay.event.coupon.service;
 import com.kakaopay.event.coupon.domain.entity.Coupon;
 import com.kakaopay.event.coupon.domain.enums.CouponStatus;
 import com.kakaopay.event.coupon.repository.CouponRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ class CouponServiceTest {
     @Autowired
     private CouponRepository couponRepository;
 
+    @AfterEach
+    void tearDown() {
+        couponRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("[S] 쿠폰을 잘 생성하고, 생성 Flag로 할당되는가")
@@ -125,7 +130,5 @@ class CouponServiceTest {
         List<Coupon> expiredCoupons = couponService.getTodayExpiredList();
         assertNotNull(expiredCoupons);
         assertEquals(expiredCoupons.size(), 1);
-
-
     }
 }
