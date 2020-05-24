@@ -6,6 +6,17 @@
 ## 프로젝트 목적 
 - REST API를 통한, 쿠폰 관리(발급,사용,삭제,취소) API 서비스.
 
+# 바로가기 
+## CI/CD 
+- [Github Action](./actions) 
+
+## 문서화 
+- [API](./docs/API.md)
+- [환경](./docs/ENV.md)
+- [설정파일](./docs/SETTINGS.md)
+- [빌드 및 실행방법](./docs/RUN.md)
+- [테스트](./docs/TEST.md) 
+- [마치며-아쉬운점](./docs/END.md)
 
 ## 문제해결 전략
 ### API 디자인 방향 
@@ -61,10 +72,3 @@
 - [ ] 성능테스트 결과 / 피드백
 - [ ] 10만개 이상 벌크 csv Import 기능
     
-
-## 문서화
-- [API](./docs/API.md)
-- [환경](./docs/ENV.md)
-- [설정파일](./docs/SETTINGS.md)
-- [빌드 및 실행방법](./docs/RUN.md)
-- [테스트] (./docs/TEST.md) 
