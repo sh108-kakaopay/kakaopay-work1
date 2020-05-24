@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ class CouponServiceTest {
             Coupon coupon = couponRepository.findFirstByCouponEquals(couponSerial);
             assertNotNull(coupon);
             assertEquals(coupon.getStatus(), CouponStatus.CREATE);
-            assertEquals(coupon.getExpiredTimestamp(), expired);
+            assertEquals(coupon.getExpiredTimestamp().toEpochSecond(ZoneOffset.UTC), expired.toEpochSecond(ZoneOffset.UTC));
         }
     }
 

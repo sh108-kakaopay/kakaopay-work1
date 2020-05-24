@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -128,7 +129,7 @@ class V1GetCouponTest {
         V1CouponResultResponse v1CouponErrorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), V1CouponResultResponse.class);
         assertNotNull(v1CouponErrorResponse);
         assertEquals(v1CouponErrorResponse.getSerial(), targetCouponSerial);
-        assertEquals(v1CouponErrorResponse.getExpired(), expired);
+        assertEquals(v1CouponErrorResponse.getExpired().toEpochSecond(ZoneOffset.UTC), expired.toEpochSecond(ZoneOffset.UTC));
     }
 
 

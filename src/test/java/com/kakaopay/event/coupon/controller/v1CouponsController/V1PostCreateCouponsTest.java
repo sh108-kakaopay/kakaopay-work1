@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,10 +40,8 @@ class V1PostCreateCouponsTest {
 
     @Autowired
     private AuthHeaderTestUtil authHeaderTestUtil;
-
-
-    private ObjectMapper objectMapper = new ObjectMapper();
     private final String url = "/v1/coupons";
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @AfterEach
     void tearDown() {
@@ -51,13 +50,13 @@ class V1PostCreateCouponsTest {
 
 
     @Test
-    @DisplayName("[E] 쿠폰 10000개 이상 넣으면 Bad Request")
+    @DisplayName("[E] 쿠폰 1000개 이상 넣으면 Bad Request")
     void 쿠폰이_만개이상이라면_BAD_REQUEST() throws Exception {
         mockMvc.perform(post(url)
                 .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
-                        "coupon-size", "10001",
+                        "coupon-size", "1001",
                         "expired-datetime", ZonedDateTime.now().toString()
                 ))
         ).andExpect(
@@ -71,13 +70,14 @@ class V1PostCreateCouponsTest {
     @Test
     @DisplayName("[S] 쿠폰 100개 넣기")
     void 쿠폰요청() throws Exception {
+        int size = 1000;
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
 
         MvcResult result = mockMvc.perform(post(url)
                 .header(authHeaderTestUtil.headerName(), authHeaderTestUtil.headerValue())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .content(MockMvcTestUtil.buildUrlEncodedFormEntity(
-                        "coupon-size", "100",
+                        "coupon-size", size + "",
                         "expired-datetime", zonedDateTime.toString()
                 ))
         ).andExpect(
@@ -86,12 +86,12 @@ class V1PostCreateCouponsTest {
                 print()
         ).andReturn();
         String[] coupons = objectMapper.readValue(result.getResponse().getContentAsString(), String[].class);
-        assertEquals(coupons.length, 100);
+        assertEquals(coupons.length, size);
         for (String couponSerial : coupons) {
             Coupon coupon = couponRepository.findFirstByCouponEquals(couponSerial);
             assertNotNull(coupon);
             assertEquals(coupon.getStatus(), CouponStatus.CREATE);
-            assertEquals(coupon.getExpiredTimestamp(), zonedDateTime.toLocalDateTime());
+            assertEquals(coupon.getExpiredTimestamp().toEpochSecond(ZoneOffset.UTC), zonedDateTime.toLocalDateTime().toEpochSecond(ZoneOffset.UTC));
         }
     }
 
