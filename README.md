@@ -8,7 +8,7 @@
 
 # 바로가기 
 ## CI/CD 
-- [Github Action](./actions) 
+- [Github Action](https://github.com/sh108-kakaopay/kakaopay-work1/actions) 
 
 ## 문서화 
 - [API](./docs/API.md)
