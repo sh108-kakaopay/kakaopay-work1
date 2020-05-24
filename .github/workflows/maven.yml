@@ -21,14 +21,14 @@ jobs:
       - name: Maven Build & Test
         run: mvn -B package --file pom.xml
 
-      - name: Upload Jar file
-        uses: actions/upload-artifact@v2
-        with:
-          name: jar-file
-          path: target/*.jar
-      - name: Upload Test Result file
-        uses: actions/upload-artifact@v2
-        with:
-          name: surefire-reports
-          path: target/surefire-reports/*
-
+#      - name: Upload Jar file
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: jar-file
+#          path: target/*.jar
+#      - name: Upload Test Result file
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: surefire-reports
+#          path: target/surefire-reports/*
+#
