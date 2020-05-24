@@ -98,10 +98,11 @@ public class CouponService {
         LocalDateTime start = LocalDateTime.of(LocalDate.now().minusDays(day), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.now().minusDays(day), LocalTime.of(23, 59, 59));
         List<Coupon> expiredTargets = couponRepository.findByExpiredTimestampBetween(start, end);
-        expiredTargets.forEach(item -> {
-            log.info(String.format("Send Message : %s 티켓이 3일 뒤에 만료 됩니다.", item.getCoupon()));
-        });
-
-        return false;
+        int successCount = 0;
+        for (Coupon expired : expiredTargets) {
+            log.info(String.format("Send Message : %s 티켓이 3일 뒤에 만료 됩니다.", expired.getCoupon()));
+            successCount += 1;
+        }
+        return expiredTargets.size() == successCount;
     }
 }
