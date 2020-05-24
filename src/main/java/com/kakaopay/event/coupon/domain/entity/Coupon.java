@@ -1,17 +1,19 @@
 package com.kakaopay.event.coupon.domain.entity;
 
+import com.kakaopay.event.coupon.domain.enums.CouponStatus;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.stream.Stream;
-import javax.persistence.*;
 
-import com.kakaopay.event.coupon.domain.enums.CouponStatus;
-import lombok.*;
+@Table(name = "coupon", indexes = {
+        @Index(name = "coupon", columnList = "coupon, coupon_status"),
+        @Index(name = "expiredTimestamp", columnList = "expired_timestamp"),
+        @Index(name = "reg_timestamp", columnList = "reg_timestamp"),
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-
-@Table(name = "coupon")
+})
 @Entity
 @Getter
 @Setter
