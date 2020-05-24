@@ -15,11 +15,7 @@
 - Memory : 16G 
 - Database : H2 
 
-## 성능 테스트 환경 
-- OS : Ubuntu 16.04 LTS Server
-- CPU : Intel(R) Core(TM) i5-2500 CPU @ 3.30GHz
-- Memory : 8196M
-- JVM Option : -server -Xms 2048m -Xmx 4096M
-- Java Version : Openjdk 1.8.0_22
-- Database : 10.3.6-MariaDB-1:10.3.6+maria~jessie
-
+## 테스트 환경 
+- Runner : Github Action
+- OS : Ubuntu 18.04
+- Database : H2 
